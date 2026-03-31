@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "ResumeForge – Role-Based Resume Builder",
+  "version": "1.0.0",
+  "description": "Build beautiful, role-optimized resumes with live preview, deep customization, and PDF/DOCX export.",
+  "action": {
+    "default_title": "Open ResumeForge"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "tabs"],
+  "web_accessible_resources": [
+    {
+      "resources": ["builder.html", "styles.css", "app.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
