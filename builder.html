@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResumeForge – Resume Builder</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500;600;700&display=swap" />
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.3.1/html-docx.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ═══════════════════════════ TOP BAR ═══════════════════════════ -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <polyline points="10 9 9 9 8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="brand-name">ResumeForge</span>
+    </div>
+
+    <!-- Preset Switcher -->
+    <nav class="preset-nav" role="tablist" aria-label="Resume Presets">
+      <button class="preset-btn active" data-preset="software" role="tab" aria-selected="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Software Dev
+      </button>
+      <button class="preset-btn" data-preset="management" role="tab" aria-selected="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Management
+      </button>
+      <button class="preset-btn" data-preset="design" role="tab" aria-selected="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        Design
+      </button>
+      <button class="preset-btn" data-preset="entry" role="tab" aria-selected="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Entry Level
+      </button>
+    </nav>
+
+    <!-- Customization Controls -->
+    <div class="customization-bar">
+      <div class="ctrl-group">
+        <label class="ctrl-label">Accent</label>
+        <div class="color-picker-wrap">
+          <input type="color" id="primaryColor" value="#4F8EF7" title="Primary Color" />
+          <div class="color-preview" id="colorPreview"></div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <label class="ctrl-label" for="fontFamily">Font</label>
+        <select id="fontFamily" class="ctrl-select">
+          <option value="'Jost', sans-serif">Jost</option>
+          <option value="'DM Sans', sans-serif">DM Sans</option>
+          <option value="'Cormorant Garamond', serif">Cormorant</option>
+          <option value="'Playfair Display', serif">Playfair</option>
+          <option value="'IBM Plex Serif', serif">IBM Plex</option>
+          <option value="'Raleway', sans-serif">Raleway</option>
+          <option value="'Lato', sans-serif">Lato</option>
+          <option value="'Merriweather', serif">Merriweather</option>
+        </select>
+      </div>
+
+      <div class="ctrl-group">
+        <label class="ctrl-label" for="spacingSlider">Spacing <span id="spacingValue">1.0×</span></label>
+        <input type="range" id="spacingSlider" min="0.7" max="1.4" step="0.05" value="1" class="ctrl-range" />
+      </div>
+    
+<div class="ctrl-group">
+  <label class="ctrl-label">Size</label>
+  <input type="range" id="fontSizeSlider" class="ctrl-range" min="12" max="18" value="14" />
+</div>
+
+<div class="ctrl-group">
+  <label class="ctrl-label">Secondary</label>
+  <div class="color-picker-wrap">
+    <input type="color" id="secondaryColor" value="#111827" title="Secondary Color" />
+    <div class="color-preview" id="secondaryColorPreview" style="background:#111827"></div>
+  </div>
+</div>
+
+</div>
+
+    <!-- Export Controls -->
+    <div class="export-controls">
+      <button class="export-btn pdf-btn" id="exportPDF" title="Export as PDF">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        PDF
+      </button>
+      <button class="export-btn docx-btn" id="exportDOCX" title="Export as DOCX">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        DOCX
+      </button>
+      <div class="autosave-indicator" id="autosaveIndicator">
+        <span class="save-dot"></span>
+        <span class="save-text">Saved</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════ MAIN LAYOUT ═══════════════════════════ -->
+  <div class="main-layout">
+
+    <!-- ─── LEFT PANEL: FORM ─── -->
+    <aside class="form-panel">
+
+      <!-- Section Tabs -->
+      <div class="form-tabs">
+        <button class="form-tab active" data-tab="personal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Personal
+        </button>
+        <button class="form-tab" data-tab="experience">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Experience
+        </button>
+        <button class="form-tab" data-tab="education">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Education
+        </button>
+        <button class="form-tab" data-tab="skills">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Skills
+        </button>
+        <button class="form-tab" data-tab="projects">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Projects
+        </button>
+        <button class="form-tab" data-tab="order">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Order
+        </button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="tab-panels">
+
+        <!-- ── PERSONAL INFO ── -->
+        <div class="tab-panel active" id="panel-personal">
+          <div class="panel-header">
+            <h2>Personal Information</h2>
+            <p>Your contact details and professional summary</p>
+          </div>
+          <div class="fields-grid">
+            <div class="field-group full">
+              <label for="p-name">Full Name</label>
+              <input type="text" id="p-name" data-field="name" placeholder="e.g. Alexandra Chen" autocomplete="name" />
+            </div>
+            <div class="field-group full">
+              <label for="p-title">Professional Title</label>
+              <input type="text" id="p-title" data-field="title" placeholder="e.g. Senior Software Engineer" />
+            </div>
+            <div class="field-group">
+              <label for="p-email">Email</label>
+              <input type="email" id="p-email" data-field="email" placeholder="alex@example.com" autocomplete="email" />
+            </div>
+            <div class="field-group">
+              <label for="p-phone">Phone</label>
+              <input type="tel" id="p-phone" data-field="phone" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+            </div>
+            <div class="field-group">
+              <label for="p-location">Location</label>
+              <input type="text" id="p-location" data-field="location" placeholder="San Francisco, CA" />
+            </div>
+            <div class="field-group">
+              <label for="p-website">Website / Portfolio</label>
+              <input type="url" id="p-website" data-field="website" placeholder="https://portfolio.dev" />
+            </div>
+            <div class="field-group">
+              <label for="p-linkedin">LinkedIn</label>
+              <input type="text" id="p-linkedin" data-field="linkedin" placeholder="linkedin.com/in/username" />
+            </div>
+            <div class="field-group">
+              <label for="p-github">GitHub</label>
+              <input type="text" id="p-github" data-field="github" placeholder="github.com/username" />
+            </div>
+            <div class="field-group full">
+              <label for="p-summary">Professional Summary</label>
+              <textarea id="p-summary" data-field="summary" rows="4" placeholder="A results-driven professional with..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── EXPERIENCE ── -->
+        <div class="tab-panel" id="panel-experience">
+          <div class="panel-header">
+            <h2>Work Experience</h2>
+            <p>Your professional history (most recent first)</p>
+          </div>
+          <div id="experience-list" class="dynamic-list"></div>
+          <button class="add-item-btn" id="addExperience">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Experience
+          </button>
+        </div>
+
+        <!-- ── EDUCATION ── -->
+        <div class="tab-panel" id="panel-education">
+          <div class="panel-header">
+            <h2>Education</h2>
+            <p>Academic background and certifications</p>
+          </div>
+          <div id="education-list" class="dynamic-list"></div>
+          <button class="add-item-btn" id="addEducation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Education
+          </button>
+        </div>
+
+        <!-- ── SKILLS ── -->
+        <div class="tab-panel" id="panel-skills">
+          <div class="panel-header">
+            <h2>Skills</h2>
+            <p>Technical abilities, tools, and competencies</p>
+          </div>
+          <div id="skills-list" class="dynamic-list skills-grid-list"></div>
+          <button class="add-item-btn" id="addSkill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Skill
+          </button>
+        </div>
+
+        <!-- ── PROJECTS ── -->
+        <div class="tab-panel" id="panel-projects">
+          <div class="panel-header">
+            <h2>Projects</h2>
+            <p>Notable work, side projects, and open source</p>
+          </div>
+          <div id="projects-list" class="dynamic-list"></div>
+          <button class="add-item-btn" id="addProject">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Project
+          </button>
+        </div>
+
+        <!-- ── SECTION ORDER ── -->
+        <div class="tab-panel" id="panel-order">
+          <div class="panel-header">
+            <h2>Section Order</h2>
+            <p>Drag or use arrows to reorder resume sections</p>
+          </div>
+          <div id="section-order-list" class="order-list"></div>
+          <div class="order-hint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Preset switching resets order automatically
+          </div>
+        </div>
+
+      </div><!-- /tab-panels -->
+    </aside>
+
+    <!-- ─── RIGHT PANEL: PREVIEW ─── -->
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div class="preview-label">
+          <span class="live-dot"></span>
+          Live Preview
+        </div>
+        <div class="preview-meta">
+          <span id="currentPresetLabel">Software Developer</span>
+          &nbsp;·&nbsp; A4 Format
+        </div>
+      </div>
+      <div class="preview-scroll">
+        <div class="preview-shadow-wrapper">
+          <div class="resume-a4" id="resumePreview">
+            <!-- Dynamically rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-layout -->
+
+</div><!-- /app-shell -->
+
+<!-- Toast notifications -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
