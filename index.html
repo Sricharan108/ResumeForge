@@ -8,11 +8,11 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500;600;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- CDN Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.3.1/html-docx.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
   <link rel="stylesheet" href="styles.css" />
@@ -85,27 +85,45 @@
         <input type="range" id="spacingSlider" min="0.7" max="1.4" step="0.05" value="1" class="ctrl-range" />
       </div>
     
-<div class="ctrl-group">
-  <label class="ctrl-label">Size</label>
-  <input type="range" id="fontSizeSlider" class="ctrl-range" min="12" max="18" value="14" />
-</div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Heading <span id="headingScaleValue">1.0×</span></label>
+        <input type="range" id="headingScaleSlider" class="ctrl-range" min="0.7" max="1.5" step="0.05" value="1" />
+      </div>
 
-<div class="ctrl-group">
-  <label class="ctrl-label">Secondary</label>
-  <div class="color-picker-wrap">
-    <input type="color" id="secondaryColor" value="#111827" title="Secondary Color" />
-    <div class="color-preview" id="secondaryColorPreview" style="background:#111827"></div>
-  </div>
-</div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Body <span id="bodyScaleValue">1.0×</span></label>
+        <input type="range" id="bodyScaleSlider" class="ctrl-range" min="0.7" max="1.5" step="0.05" value="1" />
+      </div>
 
-</div>
+      <div class="ctrl-group secondary-color-group">
+        <label class="ctrl-label">Secondary</label>
+        <div class="color-picker-wrap">
+          <input type="color" id="secondaryColor" value="#111827" title="Secondary Color" />
+          <div class="color-preview" id="secondaryColorPreview" style="background:#111827"></div>
+        </div>
+      </div>
+
+      <div class="ctrl-group palette-group">
+        <label class="ctrl-label">Palette</label>
+        <div class="palette-row" id="paletteRow"><!-- rendered by JS --></div>
+      </div>
+
+    </div>
 
     <!-- Export Controls -->
     <div class="export-controls">
-      <button class="export-btn pdf-btn" id="exportPDF" title="Export as PDF">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        PDF
-      </button>
+      <div class="pdf-export-group">
+        <button class="export-btn pdf-btn" id="exportPDF" title="Export as PDF">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          PDF
+        </button>
+        <select id="pdfSizeSelect" class="pdf-size-select" title="Paper Size">
+          <option value="a4">A4</option>
+          <option value="a3">A3</option>
+          <option value="a5">A5</option>
+          <option value="a2">A2</option>
+        </select>
+      </div>
       <button class="export-btn docx-btn" id="exportDOCX" title="Export as DOCX">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         DOCX
@@ -122,7 +140,6 @@
 
     <!-- ─── LEFT PANEL: FORM ─── -->
     <aside class="form-panel">
-
       <!-- Section Tabs -->
       <div class="form-tabs">
         <button class="form-tab active" data-tab="personal">
@@ -153,7 +170,6 @@
 
       <!-- Tab Panels -->
       <div class="tab-panels">
-
         <!-- ── PERSONAL INFO ── -->
         <div class="tab-panel active" id="panel-personal">
           <div class="panel-header">
@@ -264,7 +280,6 @@
             Preset switching resets order automatically
           </div>
         </div>
-
       </div><!-- /tab-panels -->
     </aside>
 
@@ -277,7 +292,6 @@
         </div>
         <div class="preview-meta">
           <span id="currentPresetLabel">Software Developer</span>
-          &nbsp;·&nbsp; A4 Format
         </div>
       </div>
       <div class="preview-scroll">

@@ -12,7 +12,7 @@
   "permissions": ["storage", "tabs"],
   "web_accessible_resources": [
     {
-      "resources": ["builder.html", "styles.css", "app.js"],
+      "resources": ["index.html", "styles.css", "app.js"],
       "matches": ["<all_urls>"]
     }
   ]
