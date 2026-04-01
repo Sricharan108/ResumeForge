@@ -1,12 +1,12 @@
-# 🛠️ ResumeForge
+# ResumeForge
 
 **ResumeForge** is a streamlined web application designed to help developers and professionals "forge" high-quality resumes with ease. Stop fighting with Word document margins and focus on your content.
 
-🚀 **[Live Demo](https://sricharan108.github.io/ResumeForge/)**
+**[Live Demo](https://sricharan108.github.io/ResumeForge/)**
 
 ---
 
-## ✨ Features
+## Features
 
 * **Real-time Preview:** See your changes instantly as you type.
 * **Modern Templates:** Clean, ATS-friendly designs that recruiters love.
@@ -16,7 +16,7 @@
 
 ---
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 If you want to run ResumeForge locally or contribute to the project, follow these steps:
 
@@ -40,7 +40,7 @@ If you want to run ResumeForge locally or contribute to the project, follow thes
 
 ---
 
-## 📖 How to Use
+##  How to Use
 
 1.  Enter your **Personal Information** (Name, Contact, LinkedIn).
 2.  Add your **Work Experience** and **Education** history.
@@ -49,7 +49,7 @@ If you want to run ResumeForge locally or contribute to the project, follow thes
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. 
 
@@ -61,7 +61,7 @@ Contributions are what make the open-source community such an amazing place to l
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
